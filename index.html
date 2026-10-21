@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HAA — ملف شخصي</title>
+    <meta
+      name="description"
+      content="ملف HAA الشخصي. جسر لترجمة الفيديو داخل المتصفح، والتواصل عبر GitHub."
+    />
+    <meta name="theme-color" content="#05060a" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #05060a;
+        --fg: #e7eef8;
+        --muted: #93a4bb;
+        --cyan: #3df0ff;
+        --line: #1c2c40;
+        --on-cyan: #041018;
+        --radius: 1rem;
+        --sans: "IBM Plex Sans Arabic", "Segoe UI", tahoma, sans-serif;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        overflow: hidden;
+        font-family: var(--sans);
+      }
+      button {
+        font-family: inherit;
+        touch-action: manipulation;
+        cursor: pointer;
+      }
+      ::selection {
+        background: #2f6bff;
+        color: var(--fg);
+      }
+      .stage {
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      .stage-bar {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 1.25rem 0.85rem;
+      }
+      .stage-bar-bottom {
+        align-items: center;
+        padding-bottom: max(0.85rem, env(safe-area-inset-bottom));
+      }
+      .brand {
+        display: flex;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+      .brand-tick {
+        width: 2px;
+        background: var(--cyan);
+        box-shadow: 0 0 12px var(--cyan);
+      }
+      .kicker {
+        margin: 0;
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+      }
+      .mark {
+        margin: 0.15rem 0 0;
+        margin-inline-end: -0.28em;
+        font-size: 2.25rem;
+        font-weight: 650;
+        line-height: 1;
+        letter-spacing: 0.28em;
+      }
+      .lede,
+      .hint {
+        margin: 0;
+        max-width: 12rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+        line-height: 1.5;
+        text-align: start;
+      }
+      .hint {
+        max-width: 7rem;
+        text-align: end;
+      }
+      .stage-frame {
+        container-type: size;
+        min-width: 0;
+        min-height: 0;
+        display: grid;
+        place-items: center;
+      }
+      .stage-canvas {
+        position: relative;
+        width: min(100cqw, 100cqh);
+        aspect-ratio: 1;
+      }
+      .scene-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+      }
+      .stage-canvas::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: radial-gradient(
+          circle at 50% 60%,
+          transparent 46%,
+          color-mix(in srgb, var(--bg) 28%, transparent) 72%,
+          var(--bg) 100%
+        );
+      }
+      .globe-hit {
+        position: absolute;
+        z-index: 5;
+        left: 50.5%;
+        top: 65.5%;
+        width: 52%;
+        aspect-ratio: 1;
+        transform: translate(-50%, -50%);
+        border: 0;
+        border-radius: 999px;
+        padding: 0;
+        background: transparent;
+      }
+      .globe-hit::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        border: 1.5px solid color-mix(in srgb, var(--cyan) 85%, white);
+        box-shadow:
+          0 0 22px color-mix(in srgb, var(--cyan) 70%, transparent),
+          inset 0 0 16px color-mix(in srgb, var(--cyan) 25%, transparent);
+        animation: globe-pulse 2.8s ease-in-out infinite;
+      }
+      .globe-hit.is-open::before {
+        animation: none;
+        border-color: var(--cyan);
+        box-shadow: 0 0 28px color-mix(in srgb, var(--cyan) 65%, transparent);
+      }
+      .globe-hit:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 4px;
+      }
+      .contact-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        min-height: 2.75rem;
+        color: var(--fg);
+        font-size: 0.875rem;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+      }
+      .contact-link svg {
+        width: 1rem;
+        height: 1rem;
+        stroke: var(--cyan);
+      }
+      .contact-link:hover {
+        color: var(--cyan);
+        border-bottom-color: var(--cyan);
+      }
+      .contact-link:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 3px;
+      }
+      .sheet-wrap {
+        position: fixed;
+        z-index: 30;
+        inset-inline: 0;
+        bottom: 0;
+        padding: 0.75rem 1rem max(1rem, env(safe-area-inset-bottom));
+        pointer-events: none;
+      }
+      .sheet-wrap[hidden] {
+        display: none;
+      }
+      .sheet {
+        pointer-events: auto;
+        display: flex;
+        max-width: 28rem;
+        margin-inline: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1rem 1.1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        box-shadow: 0 16px 50px color-mix(in srgb, var(--bg) 80%, transparent);
+        backdrop-filter: blur(16px);
+      }
+      .sheet-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+        width: 100%;
+      }
+      .sheet-title {
+        margin: 0.15rem 0 0;
+        font-size: 1.5rem;
+        font-weight: 650;
+        line-height: 1.2;
+      }
+      .sheet-close {
+        display: grid;
+        width: 2.75rem;
+        height: 2.75rem;
+        flex: none;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--fg);
+      }
+      .sheet-close svg {
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+      .sheet-close:focus-visible {
+        outline: 2px solid var(--cyan);
+        outline-offset: 2px;
+      }
+      .sheet-note {
+        display: inline-block;
+        margin: 0.35rem 0 0;
+        padding: 0.1rem 0.5rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--cyan) 16%, transparent);
+        color: var(--cyan);
+        font-size: 0.75rem;
+      }
+      .sheet-blurb {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        min-height: 2.75rem;
+        margin-top: 0.9rem;
+        padding: 0 1rem;
+        border-radius: 999px;
+        background: var(--cyan);
+        color: var(--on-cyan);
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .cta svg {
+        width: 1rem;
+        height: 1rem;
+      }
+      .cta:focus-visible {
+        outline: 2px solid var(--fg);
+        outline-offset: 3px;
+      }
+      .contact-short {
+        display: none;
+      }
+      @keyframes globe-pulse {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform: scale(0.98);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @media (max-width: 420px) {
+        .lede,
+        .contact-full {
+          display: none;
+        }
+        .contact-short {
+          display: inline;
+        }
+      }
+      @media (max-height: 640px) {
+        .mark {
+          font-size: 1.6rem;
+        }
+        .stage-bar {
+          padding-top: 0.7rem;
+          padding-bottom: 0.45rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .globe-hit::before {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <header class="stage-bar stage-bar-top">
+        <div class="brand">
+          <span class="brand-tick" aria-hidden="true"></span>
+          <div>
+            <p class="kicker">ملف شخصي</p>
+            <h1 class="mark">HAA</h1>
+          </div>
+        </div>
+        <p class="lede">أبني أدوات تشتغل في المتصفح. المس الكرة ويفتح الملف.</p>
+      </header>
+
+      <div class="stage-frame">
+        <div class="stage-canvas">
+          <video
+            id="scene"
+            class="scene-video"
+            src="scene.mp4"
+            poster="poster.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+          ></video>
+          <button
+            id="globe"
+            type="button"
+            class="globe-hit"
+            aria-expanded="false"
+            aria-describedby="hint"
+            aria-label="فتح الملف"
+          ></button>
+        </div>
+      </div>
+
+      <footer class="stage-bar stage-bar-bottom">
+        <div>
+          <p class="kicker">تواصل</p>
+          <a class="contact-link" href="https://github.com/haa48915-star" target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+            <span class="contact-full">github.com/haa48915-star</span>
+            <span class="contact-short">GitHub</span>
+          </a>
+        </div>
+        <p id="hint" class="hint">المس الكرة</p>
+      </footer>
+
+      <div id="sheet" class="sheet-wrap" hidden>
+        <article class="sheet" role="dialog" aria-label="جسر">
+          <div class="sheet-head">
+            <div>
+              <p class="kicker">الملف الرئيسي</p>
+              <h2 class="sheet-title">جسر</h2>
+            </div>
+            <button id="close" type="button" class="sheet-close" aria-label="إغلاق">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </button>
+          </div>
+          <p class="sheet-note">ترجمة الفيديو · جاهز</p>
+          <p class="sheet-blurb">
+            يستخرج الكلام من المقطع ويترجمه عندك في المتصفح. تعليقات تلقائية عبر Whisper، والملف ما يطلع من جهازك.
+          </p>
+          <a class="cta" href="https://haa48915-star.github.io/video-translator/" target="_blank" rel="noreferrer">
+            <span>افتح جسر</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 3h6v6" />
+              <path d="M10 14 21 3" />
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+          </a>
+        </article>
+      </div>
+    </div>
+    <script>
+      const globe = document.getElementById("globe");
+      const sheet = document.getElementById("sheet");
+      const hint = document.getElementById("hint");
+      const video = document.getElementById("scene");
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      function syncVideo() {
+        if (motion.matches) {
+          video.pause();
+          return;
+        }
+        video.playbackRate = 0.85;
+        video.play().catch(function () {});
+      }
+
+      function setOpen(open) {
+        sheet.hidden = !open;
+        globe.classList.toggle("is-open", open);
+        globe.setAttribute("aria-expanded", open ? "true" : "false");
+        globe.setAttribute("aria-label", open ? "إغلاق الملف" : "فتح الملف");
+        hint.textContent = open ? "الملف الرئيسي" : "المس الكرة";
+      }
+
+      globe.addEventListener("click", function () {
+        if (video.paused) video.play().catch(function () {});
+        setOpen(sheet.hidden);
+      });
+      document.getElementById("close").addEventListener("click", function () {
+        setOpen(false);
+      });
+      window.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") setOpen(false);
+      });
+      syncVideo();
+      motion.addEventListener("change", syncVideo);
+    </script>
+  </body>
+</html>
