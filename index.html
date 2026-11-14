@@ -479,24 +479,21 @@
       syncVideo();
       motion.addEventListener("change", syncVideo);
 
-      // Name animation: type "Mr. Mohamed" -> erase -> blinking _
+      // Name animation: type "Mr. Mohamed" -> erase -> repeat
       (function () {
         var typed = document.getElementById("typed");
         var caret = document.getElementById("caret");
         var NAME = "Mr. Mohamed";
 
-        function finish() {
-          typed.textContent = "";
-          caret.classList.add("is-blinking");
-        }
-
         if (motion.matches) {
-          finish();
+          typed.textContent = NAME;
+          caret.classList.remove("is-blinking");
           return;
         }
 
         var i = 0;
         function type() {
+          caret.classList.remove("is-blinking");
           typed.textContent = NAME.slice(0, ++i);
           if (i < NAME.length) setTimeout(type, 110);
           else setTimeout(erase, 1100);
@@ -504,7 +501,10 @@
         function erase() {
           typed.textContent = NAME.slice(0, --i);
           if (i > 0) setTimeout(erase, 70);
-          else setTimeout(finish, 400);
+          else {
+            caret.classList.add("is-blinking");
+            setTimeout(type, 650);
+          }
         }
         setTimeout(type, 500);
       })();
