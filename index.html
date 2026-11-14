@@ -130,6 +130,25 @@
         max-width: 7rem;
         text-align: end;
       }
+      .visits {
+        display: grid;
+        justify-items: center;
+        gap: 0.25rem;
+        min-width: 5.5rem;
+        padding: 0.45rem 0.7rem 0.55rem;
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        background: color-mix(in srgb, var(--bg) 72%, transparent);
+        box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 8%, transparent);
+      }
+      .visits .kicker {
+        font-size: 0.65rem;
+      }
+      .visits img {
+        display: block;
+        width: 4.8rem;
+        height: 1.25rem;
+      }
       .scene {
         --size: min(118vw, 108vh);
         position: fixed;
@@ -409,6 +428,14 @@
             <span class="contact-full">github.com/haa48915-star</span>
             <span class="contact-short">GitHub</span>
           </a>
+        </div>
+        <div class="visits" aria-label="عدد الزيارات">
+          <span class="kicker">الزيارات</span>
+          <img
+            src="https://visitor-badge.laobi.icu/badge?page_id=haa48915-star.my-website&left_text=visits"
+            alt="عدد الزيارات"
+            loading="eager"
+          />
         </div>
         <p id="hint" class="hint">المس الكرة</p>
       </footer>
