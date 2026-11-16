@@ -34,6 +34,51 @@
         overflow: hidden;
         font-family: var(--sans);
       }
+      .tv-noise {
+        position: fixed;
+        z-index: 4;
+        inset: -35%;
+        pointer-events: none;
+        opacity: 0.1;
+        mix-blend-mode: screen;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+        background-size: 180px 180px;
+        animation: tv-noise-shift 0.22s steps(2) infinite;
+      }
+      .tv-noise::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 3px,
+          rgba(255, 255, 255, 0.045) 4px,
+          transparent 5px
+        );
+      }
+      @keyframes tv-noise-shift {
+        0% {
+          transform: translate3d(0, 0, 0);
+          background-position: 0 0;
+        }
+        25% {
+          transform: translate3d(2%, -1%, 0);
+          background-position: 31px -19px;
+        }
+        50% {
+          transform: translate3d(-1%, 2%, 0);
+          background-position: -17px 28px;
+        }
+        75% {
+          transform: translate3d(1%, 1%, 0);
+          background-position: 24px 11px;
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+          background-position: 0 0;
+        }
+      }
       button {
         font-family: inherit;
         touch-action: manipulation;
@@ -376,10 +421,15 @@
         .globe-hit::before {
           animation: none;
         }
+        .tv-noise {
+          opacity: 0.045;
+          animation: none;
+        }
       }
     </style>
   </head>
   <body>
+    <div class="tv-noise" aria-hidden="true"></div>
     <div class="scene">
       <video
         id="scene"
