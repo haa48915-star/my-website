@@ -165,71 +165,56 @@
           --size: min(118vw, 108dvh);
         }
       }
-      .signal-core {
+      .luxury-beam {
         position: absolute;
         left: 50%;
         top: 50%;
-        width: min(72vw, 30rem);
-        height: min(32vw, 10rem);
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        background: radial-gradient(
-          ellipse,
-          color-mix(in srgb, var(--cyan) 28%, transparent) 0%,
-          color-mix(in srgb, #536dff 15%, transparent) 30%,
-          transparent 72%
-        );
-        box-shadow:
-          0 0 45px color-mix(in srgb, var(--cyan) 24%, transparent),
-          0 0 110px color-mix(in srgb, #536dff 14%, transparent);
-        animation: signal-breathe 4.5s ease-in-out infinite;
-        pointer-events: none;
-      }
-      .signal-core::before {
-        content: "";
-        position: absolute;
-        left: 18%;
-        right: 18%;
-        top: 50%;
+        width: min(76vw, 34rem);
         height: 1px;
+        transform: translate(-50%, -50%);
         background: linear-gradient(
           90deg,
           transparent,
-          color-mix(in srgb, var(--cyan) 90%, white),
+          color-mix(in srgb, var(--cyan) 72%, white),
           transparent
         );
-        box-shadow: 0 0 16px var(--cyan);
-        animation: signal-scan 2.8s ease-in-out infinite;
+        box-shadow: 0 0 22px color-mix(in srgb, var(--cyan) 42%, transparent);
+        opacity: 0.78;
+        animation: beam-shimmer 5s ease-in-out infinite;
+        pointer-events: none;
       }
-      .signal-core::after {
+      .luxury-beam::before {
         content: "";
         position: absolute;
-        inset: 22% 8%;
-        border: 1px solid color-mix(in srgb, var(--cyan) 28%, transparent);
+        left: 50%;
+        top: 50%;
+        width: 5px;
+        height: 5px;
+        transform: translate(-50%, -50%);
         border-radius: 50%;
-        transform: scaleX(1.35);
-        opacity: 0.65;
+        background: var(--fg);
+        box-shadow: 0 0 12px 2px var(--cyan);
       }
-      @keyframes signal-breathe {
+      .luxury-beam::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -2.5rem;
+        width: 1px;
+        height: 5rem;
+        transform: translateX(-50%);
+        background: linear-gradient(transparent, color-mix(in srgb, var(--cyan) 35%, transparent), transparent);
+        opacity: 0.55;
+      }
+      @keyframes beam-shimmer {
         0%,
         100% {
-          opacity: 0.72;
-          transform: translate(-50%, -50%) scale(0.94);
+          opacity: 0.5;
+          transform: translate(-50%, -50%) scaleX(0.86);
         }
         50% {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1.04);
-        }
-      }
-      @keyframes signal-scan {
-        0%,
-        100% {
-          opacity: 0.35;
-          transform: scaleX(0.55);
-        }
-        50% {
-          opacity: 1;
-          transform: scaleX(1);
+          opacity: 0.82;
+          transform: translate(-50%, -50%) scaleX(1);
         }
       }
       .scene::after {
@@ -426,8 +411,7 @@
         .caret.is-blinking {
           animation: none;
         }
-        .signal-core,
-        .signal-core::before {
+        .luxury-beam {
           animation: none;
         }
       }
@@ -435,7 +419,7 @@
   </head>
   <body>
     <div class="scene">
-      <div class="signal-core" aria-hidden="true"></div>
+      <div class="luxury-beam" aria-hidden="true"></div>
       <button
         id="globe"
         type="button"
