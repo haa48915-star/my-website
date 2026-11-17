@@ -309,6 +309,27 @@
         font-weight: 650;
         line-height: 1.2;
       }
+      .project-title {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .project-icon {
+        display: grid;
+        width: 2.4rem;
+        height: 2.4rem;
+        flex: none;
+        place-items: center;
+        border: 1px solid color-mix(in srgb, var(--cyan) 55%, var(--line));
+        border-radius: 0.7rem;
+        background: color-mix(in srgb, var(--cyan) 10%, transparent);
+        color: var(--cyan);
+        box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 16%, transparent);
+      }
+      .project-icon svg {
+        width: 1.45rem;
+        height: 1.45rem;
+      }
       .sheet-close {
         display: grid;
         width: 2.75rem;
@@ -465,7 +486,16 @@
           <div class="sheet-head">
             <div>
               <p class="kicker">الملف الرئيسي</p>
-              <h2 class="sheet-title">جسر</h2>
+              <div class="project-title">
+                <span class="project-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 19h18" />
+                    <path d="M5 17c2-8 12-8 14 0" />
+                    <path d="M7 13v6M12 11v8M17 13v6" />
+                  </svg>
+                </span>
+                <h2 class="sheet-title">جسر</h2>
+              </div>
             </div>
             <button id="close" type="button" class="sheet-close" aria-label="إغلاق">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
