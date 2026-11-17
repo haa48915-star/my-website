@@ -244,22 +244,6 @@
         background: transparent;
         pointer-events: auto;
       }
-      .globe-hit::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        border: 1.5px solid color-mix(in srgb, var(--cyan) 85%, white);
-        box-shadow:
-          0 0 22px color-mix(in srgb, var(--cyan) 70%, transparent),
-          inset 0 0 16px color-mix(in srgb, var(--cyan) 25%, transparent);
-        animation: globe-pulse 2.8s ease-in-out infinite;
-      }
-      .globe-hit.is-open::before {
-        animation: none;
-        border-color: var(--cyan);
-        box-shadow: 0 0 28px color-mix(in srgb, var(--cyan) 65%, transparent);
-      }
       .globe-hit:focus-visible {
         outline: 2px solid var(--cyan);
         outline-offset: 4px;
@@ -385,17 +369,6 @@
       .contact-short {
         display: none;
       }
-      @keyframes globe-pulse {
-        0%,
-        100% {
-          opacity: 0.55;
-          transform: scale(0.98);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
       @media (max-width: 420px) {
         .lede,
         .contact-full {
@@ -416,9 +389,6 @@
       }
       @media (prefers-reduced-motion: reduce) {
         .caret.is-blinking {
-          animation: none;
-        }
-        .globe-hit::before {
           animation: none;
         }
         .tv-noise {
