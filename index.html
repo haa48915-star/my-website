@@ -153,6 +153,11 @@
         gap: 0.9rem;
       }
 
+      .projects {
+        display: grid;
+        gap: 0.7rem;
+      }
+
       .project-icon {
         display: grid;
         width: 2.75rem;
@@ -288,23 +293,41 @@
       </header>
 
       <section aria-labelledby="project-label">
-        <p class="section-label" id="project-label">مشروع مختار</p>
-        <a class="project" href="https://haa48915-star.github.io/video-translator/" target="_blank" rel="noreferrer">
-          <span class="project-info">
-            <span class="project-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 19h18" />
-                <path d="M5 17c2-8 12-8 14 0" />
-                <path d="M7 13v6M12 11v8M17 13v6" />
-              </svg>
+        <p class="section-label" id="project-label">مشاريعي</p>
+        <div class="projects">
+          <a class="project" href="https://haa48915-star.github.io/video-translator/" target="_blank" rel="noreferrer">
+            <span class="project-info">
+              <span class="project-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 19h18" />
+                  <path d="M5 17c2-8 12-8 14 0" />
+                  <path d="M7 13v6M12 11v8M17 13v6" />
+                </svg>
+              </span>
+              <span>
+                <h2>جسر</h2>
+                <p>ترجمة الفيديو داخل المتصفح</p>
+              </span>
             </span>
-            <span>
-              <h2>جسر</h2>
-              <p>ترجمة الفيديو داخل المتصفح</p>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="project" href="https://imaginative-manatee-c56a40.netlify.app/?hl=ar-001" target="_blank" rel="noreferrer">
+            <span class="project-info">
+              <span class="project-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M3 8h18M7 6h.01M10 6h.01M13 6h.01" />
+                  <path d="m8 13 2 2 4-4" />
+                </svg>
+              </span>
+              <span>
+                <h2>مشروع قرآن</h2>
+                <p>تجربة قرآنية تفاعلية</p>
+              </span>
             </span>
-          </span>
-          <span class="arrow" aria-hidden="true">↗</span>
-        </a>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </section>
 
       <section class="contact-section" aria-labelledby="contact-label">
